@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-i18n="title_about">단체 소개 — 원하다</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main" data-i18n="skip">본문으로 건너뛰기</a>
+<header class="site-header">
+  <div class="wrap nav">
+    <a href="index.html" class="brand">
+      <span class="brand-mark" aria-hidden="true">원</span>
+      <span data-i18n="brand">원하다</span>
+    </a>
+    <nav class="nav-links" id="navLinks" aria-label="주 메뉴">
+      <a href="index.html" data-i18n="nav_home">홈</a>
+      <a href="services.html" data-i18n="nav_services">서비스</a>
+      <a href="stories.html" data-i18n="nav_stories">스토리</a>
+      <a href="support.html" data-i18n="nav_support">후원·참여</a>
+      <a href="about.html" class="active" data-i18n="nav_about">단체 소개</a>
+    </nav>
+    <div class="nav-actions">
+      <div class="lang-toggle" role="group" aria-label="언어 선택" data-i18n-attr="aria-label:lang_label">
+        <button data-lang="ko" aria-pressed="true">KO</button>
+        <button data-lang="ru" aria-pressed="false">RU</button>
+        <button data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <a href="support.html" class="btn btn-primary" data-i18n="cta_donate">후원하기</a>
+      <button class="menu-btn" id="menuBtn" aria-label="메뉴 열기" aria-expanded="false" data-i18n-attr="aria-label:menu_open">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="page-head">
+    <div class="wrap">
+      <div class="crumb"><span data-i18n="crumb_home">홈</span> / <span data-i18n="abt_crumb_self">단체 소개</span></div>
+      <h1 data-i18n="abt_title">원하다는 어떤 곳인가요?</h1>
+      <p data-i18n="abt_desc">탈북민·고려인·조선족·사할린동포의 정착을 실무적 도움으로 잇는 비영리 연합단체입니다. 게시판 대신 사람을, 공지 대신 연결을 우선합니다.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2 data-i18n="abt_mission_h">미션</h2>
+      <p class="lead" style="font-size:18px;color:var(--color-ink);max-width:680px" data-i18n="abt_mission_p">
+        먼 길을 거쳐 한국에 도착한 한민족 디아스포라가, 다음 한 걸음을 자기 의지로 디딜 수 있도록.
+        우리는 정보가 아니라 연결을, 안내가 아니라 동행을 만듭니다.
+      </p>
+
+      <div class="kpi-grid">
+        <div class="kpi"><div class="num">3,182</div><div class="lbl" data-i18n="stat1">2025년 누적 상담</div></div>
+        <div class="kpi"><div class="num">487</div><div class="lbl" data-i18n="stat2">정착 매칭 가정</div></div>
+        <div class="kpi"><div class="num">12</div><div class="lbl" data-i18n="stat3">전국 거점 센터</div></div>
+        <div class="kpi"><div class="num">94%</div><div class="lbl" data-i18n="stat4">사업비 집행률</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight" style="background:#FAF6EE">
+    <div class="wrap" style="display:grid;grid-template-columns:1fr 1.1fr;gap:48px">
+      <div>
+        <h2 style="margin:0 0 16px" data-i18n="abt_history_h">연혁</h2>
+        <ol class="timeline">
+          <li><strong>2026</strong><span data-i18n="abt_h1">전국 거점 12개 확장 / 러시아어 상담 채널 정식 운영</span></li>
+          <li><strong>2024</strong><span data-i18n="abt_h2">고려인·사할린동포 통합 지원 프로그램 시작</span></li>
+          <li><strong>2022</strong><span data-i18n="abt_h3">법인 전환, 정기후원 1,000명 돌파</span></li>
+          <li><strong>2019</strong><span data-i18n="abt_h4">탈북민 정착 멘토링 프로그램 운영 개시</span></li>
+          <li><strong>2017</strong><span data-i18n="abt_h5">임의단체로 출범</span></li>
+        </ol>
+      </div>
+      <div id="finance">
+        <h2 style="margin:0 0 16px" data-i18n="abt_trans_h">투명성</h2>
+        <p style="color:var(--color-ink-soft)" data-i18n="abt_trans_p">매년 외부 회계감사를 받고, 연간보고서·재정 내역을 공개합니다.</p>
+        <ul style="list-style:none;padding:0;margin:16px 0;display:grid;gap:10px">
+          <li><a class="btn btn-ghost" id="report" href="#" data-i18n="abt_trans1">2025 연간보고서 PDF →</a></li>
+          <li><a class="btn btn-ghost" href="#" data-i18n="abt_trans2">2025 외부 회계감사 보고서 →</a></li>
+          <li><a class="btn btn-ghost" href="#" data-i18n="abt_trans3">기부금영수증 발급 안내 →</a></li>
+          <li><a class="btn btn-ghost" id="privacy" href="#" data-i18n="abt_trans4">개인정보 처리방침 →</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2 data-i18n="abt_centers_h">전국 거점 (예시)</h2>
+      <p class="lead" data-i18n="abt_centers_lead">방문 상담은 사전 예약을 권장합니다.</p>
+      <div class="services" style="grid-template-columns:repeat(3, 1fr)">
+        <div class="svc"><h3 data-i18n="abt_c1">서울 본부</h3><p>02-0000-0000<br><span data-i18n="abt_c1_addr">서울시 ○○구 ○○로 00</span></p></div>
+        <div class="svc"><h3 data-i18n="abt_c2">인천 센터</h3><p>032-000-0000<br><span data-i18n="abt_c2_addr">인천시 ○○구 ○○동</span></p></div>
+        <div class="svc"><h3 data-i18n="abt_c3">안산 센터 (고려인)</h3><p>031-000-0000<br><span data-i18n="abt_c3_addr">안산시 단원구 ○○</span></p></div>
+        <div class="svc"><h3 data-i18n="abt_c4">광주 센터</h3><p>062-000-0000<br><span data-i18n="abt_c4_addr">광주시 ○○구 ○○</span></p></div>
+        <div class="svc"><h3 data-i18n="abt_c5">대구 센터</h3><p>053-000-0000<br><span data-i18n="abt_c5_addr">대구시 ○○구 ○○</span></p></div>
+        <div class="svc"><h3 data-i18n="abt_c6">부산 센터</h3><p>051-000-0000<br><span data-i18n="abt_c6_addr">부산시 ○○구 ○○</span></p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap foot-bottom">
+    <div>© 2026 원하다 (Onehada). All rights reserved.</div>
+    <div data-i18n="foot_note">본 사이트는 WCAG 2.1 AA 기준을 따릅니다.</div>
+  </div>
+</footer>
+<script src="script.js"></script>
+</body>
+</html>

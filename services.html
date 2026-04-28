@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-i18n="title_services">서비스 — 원하다</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main" data-i18n="skip">본문으로 건너뛰기</a>
+<header class="site-header">
+  <div class="wrap nav">
+    <a href="index.html" class="brand">
+      <span class="brand-mark" aria-hidden="true">원</span>
+      <span data-i18n="brand">원하다</span>
+    </a>
+    <nav class="nav-links" id="navLinks" aria-label="주 메뉴">
+      <a href="index.html" data-i18n="nav_home">홈</a>
+      <a href="services.html" class="active" data-i18n="nav_services">서비스</a>
+      <a href="stories.html" data-i18n="nav_stories">스토리</a>
+      <a href="support.html" data-i18n="nav_support">후원·참여</a>
+      <a href="about.html" data-i18n="nav_about">단체 소개</a>
+    </nav>
+    <div class="nav-actions">
+      <div class="lang-toggle" role="group" aria-label="언어 선택" data-i18n-attr="aria-label:lang_label">
+        <button data-lang="ko" aria-pressed="true">KO</button>
+        <button data-lang="ru" aria-pressed="false">RU</button>
+        <button data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <a href="support.html" class="btn btn-primary" data-i18n="cta_donate">후원하기</a>
+      <button class="menu-btn" id="menuBtn" aria-label="메뉴 열기" aria-expanded="false" data-i18n-attr="aria-label:menu_open">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="page-head">
+    <div class="wrap">
+      <div class="crumb"><span data-i18n="crumb_home">홈</span> / <span data-i18n="srv_crumb_self">서비스</span></div>
+      <h1 data-i18n="srv_title">필요한 도움을 바로 신청하세요</h1>
+      <p data-i18n="srv_desc">각 서비스마다 대상·신청 방법·담당자·소요 시간을 명시합니다. 모든 상담은 비공개로 진행됩니다.</p>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="wrap">
+      <div id="filter" class="toggle-row" role="group" aria-label="대상자 필터" style="margin-bottom:24px">
+        <button data-filter="all" aria-pressed="true" data-i18n="srv_f_all">전체</button>
+        <button data-filter="defector" aria-pressed="false" data-i18n="srv_f_defector">탈북민</button>
+        <button data-filter="koryo" aria-pressed="false" data-i18n="srv_f_koryo">고려인</button>
+        <button data-filter="joseonjok" aria-pressed="false" data-i18n="srv_f_joseonjok">조선족</button>
+        <button data-filter="sakhalin" aria-pressed="false" data-i18n="srv_f_sakhalin">사할린동포</button>
+      </div>
+
+      <div id="svcList">
+        <article class="svc-row" id="housing" data-tags="defector koryo sakhalin">
+          <div class="svc-icon" aria-hidden="true">🏠</div>
+          <div>
+            <h3 style="margin:0" data-i18n="srv1_h">주거 지원</h3>
+            <p style="margin:4px 0 0;color:var(--color-ink-soft);font-size:14px" data-i18n="srv1_d">긴급 거처, 임대주택 신청 동행, 보증금 지원 연계</p>
+            <dl>
+              <dt data-i18n="srv_dt_target">대상</dt><dd data-i18n="srv1_target">탈북민·고려인·사할린동포</dd>
+              <dt data-i18n="srv_dt_apply">신청</dt><dd data-i18n="srv1_apply">온라인 폼 / 전화</dd>
+              <dt data-i18n="srv_dt_contact">담당</dt><dd data-i18n="srv1_contact">주거지원팀 김○○</dd>
+              <dt data-i18n="srv_dt_time">소요</dt><dd data-i18n="srv1_time">최초 상담 3일 이내</dd>
+            </dl>
+          </div>
+          <a href="#" class="btn btn-primary" data-i18n="srv_btn">신청하기</a>
+        </article>
+
+        <article class="svc-row" id="job" data-tags="defector koryo joseonjok sakhalin">
+          <div class="svc-icon" aria-hidden="true">💼</div>
+          <div>
+            <h3 style="margin:0" data-i18n="srv2_h">취업·직업훈련</h3>
+            <p style="margin:4px 0 0;color:var(--color-ink-soft);font-size:14px" data-i18n="srv2_d">직업훈련 매칭, 자격증 취득 지원, 채용 연계</p>
+            <dl>
+              <dt data-i18n="srv_dt_target">대상</dt><dd data-i18n="srv2_target">전체</dd>
+              <dt data-i18n="srv_dt_apply">신청</dt><dd data-i18n="srv2_apply">온라인 폼 / 방문</dd>
+              <dt data-i18n="srv_dt_contact">담당</dt><dd data-i18n="srv2_contact">일자리팀 이○○</dd>
+              <dt data-i18n="srv_dt_time">소요</dt><dd data-i18n="srv2_time">훈련 과정 3~6개월</dd>
+            </dl>
+          </div>
+          <a href="#" class="btn btn-primary" data-i18n="srv_btn">신청하기</a>
+        </article>
+
+        <article class="svc-row" id="edu" data-tags="defector koryo joseonjok sakhalin">
+          <div class="svc-icon" aria-hidden="true">📚</div>
+          <div>
+            <h3 style="margin:0" data-i18n="srv3_h">교육 지원</h3>
+            <p style="margin:4px 0 0;color:var(--color-ink-soft);font-size:14px" data-i18n="srv3_d">검정고시 준비반, 대학 진학 멘토링, 평생교육 연계</p>
+            <dl>
+              <dt data-i18n="srv_dt_target">대상</dt><dd data-i18n="srv3_target">전체</dd>
+              <dt data-i18n="srv_dt_apply">신청</dt><dd data-i18n="srv3_apply">온라인 폼</dd>
+              <dt data-i18n="srv_dt_contact">담당</dt><dd data-i18n="srv3_contact">교육팀 박○○</dd>
+              <dt data-i18n="srv_dt_time">소요</dt><dd data-i18n="srv3_time">학기제 운영</dd>
+            </dl>
+          </div>
+          <a href="#" class="btn btn-primary" data-i18n="srv_btn">신청하기</a>
+        </article>
+
+        <article class="svc-row" id="legal" data-tags="defector koryo joseonjok sakhalin">
+          <div class="svc-icon" aria-hidden="true">⚖️</div>
+          <div>
+            <h3 style="margin:0" data-i18n="srv4_h">법률 상담</h3>
+            <p style="margin:4px 0 0;color:var(--color-ink-soft);font-size:14px" data-i18n="srv4_d">체류·국적, 가족관계 등록, 무료 변호사 매칭</p>
+            <dl>
+              <dt data-i18n="srv_dt_target">대상</dt><dd data-i18n="srv4_target">전체</dd>
+              <dt data-i18n="srv_dt_apply">신청</dt><dd data-i18n="srv4_apply">전화 / 방문 예약</dd>
+              <dt data-i18n="srv_dt_contact">담당</dt><dd data-i18n="srv4_contact">법률지원팀</dd>
+              <dt data-i18n="srv_dt_time">소요</dt><dd data-i18n="srv4_time">상담 1주 이내</dd>
+            </dl>
+          </div>
+          <a href="#" class="btn btn-primary" data-i18n="srv_btn">신청하기</a>
+        </article>
+
+        <article class="svc-row" id="mind" data-tags="defector koryo sakhalin">
+          <div class="svc-icon" aria-hidden="true">🧡</div>
+          <div>
+            <h3 style="margin:0" data-i18n="srv5_h">심리상담</h3>
+            <p style="margin:4px 0 0;color:var(--color-ink-soft);font-size:14px" data-i18n="srv5_d">개인 상담, 가족 상담, 또래 모임 (전액 무료)</p>
+            <dl>
+              <dt data-i18n="srv_dt_target">대상</dt><dd data-i18n="srv5_target">탈북민·고려인·사할린동포</dd>
+              <dt data-i18n="srv_dt_apply">신청</dt><dd data-i18n="srv5_apply">비공개 폼 / 전화</dd>
+              <dt data-i18n="srv_dt_contact">담당</dt><dd data-i18n="srv5_contact">임상심리사</dd>
+              <dt data-i18n="srv_dt_time">소요</dt><dd data-i18n="srv5_time">주 1회 8회기 기본</dd>
+            </dl>
+          </div>
+          <a href="#" class="btn btn-primary" data-i18n="srv_btn">신청하기</a>
+        </article>
+
+        <article class="svc-row" id="health" data-tags="defector koryo sakhalin">
+          <div class="svc-icon" aria-hidden="true">🏥</div>
+          <div>
+            <h3 style="margin:0" data-i18n="srv6_h">의료 지원</h3>
+            <p style="margin:4px 0 0;color:var(--color-ink-soft);font-size:14px" data-i18n="srv6_d">의료비 일부 지원, 건강검진 연계, 병원 통역 동행</p>
+            <dl>
+              <dt data-i18n="srv_dt_target">대상</dt><dd data-i18n="srv6_target">탈북민·고려인·사할린동포</dd>
+              <dt data-i18n="srv_dt_apply">신청</dt><dd data-i18n="srv6_apply">온라인 폼</dd>
+              <dt data-i18n="srv_dt_contact">담당</dt><dd data-i18n="srv6_contact">의료지원팀</dd>
+              <dt data-i18n="srv_dt_time">소요</dt><dd data-i18n="srv6_time">건당 7일 이내 처리</dd>
+            </dl>
+          </div>
+          <a href="#" class="btn btn-primary" data-i18n="srv_btn">신청하기</a>
+        </article>
+
+        <article class="svc-row" id="korean" data-tags="koryo sakhalin">
+          <div class="svc-icon" aria-hidden="true">🗣️</div>
+          <div>
+            <h3 style="margin:0" data-i18n="srv7_h">한국어 학습</h3>
+            <p style="margin:4px 0 0;color:var(--color-ink-soft);font-size:14px" data-i18n="srv7_d">생활/직무 한국어, 발음교정, 1:1 튜터링 (한·러 진행)</p>
+            <dl>
+              <dt data-i18n="srv_dt_target">대상</dt><dd data-i18n="srv7_target">고려인·사할린동포 우선</dd>
+              <dt data-i18n="srv_dt_apply">신청</dt><dd data-i18n="srv7_apply">온라인 폼</dd>
+              <dt data-i18n="srv_dt_contact">담당</dt><dd data-i18n="srv7_contact">언어지원팀</dd>
+              <dt data-i18n="srv_dt_time">소요</dt><dd data-i18n="srv7_time">분기제 12주 과정</dd>
+            </dl>
+          </div>
+          <a href="#" class="btn btn-primary" data-i18n="srv_btn">신청하기</a>
+        </article>
+
+        <article class="svc-row" id="kids" data-tags="defector koryo joseonjok sakhalin">
+          <div class="svc-icon" aria-hidden="true">🎒</div>
+          <div>
+            <h3 style="margin:0" data-i18n="srv8_h">자녀 교육</h3>
+            <p style="margin:4px 0 0;color:var(--color-ink-soft);font-size:14px" data-i18n="srv8_d">학교 적응 지원, 학습 멘토링, 진로 상담</p>
+            <dl>
+              <dt data-i18n="srv_dt_target">대상</dt><dd data-i18n="srv8_target">초·중·고 자녀</dd>
+              <dt data-i18n="srv_dt_apply">신청</dt><dd data-i18n="srv8_apply">온라인 폼</dd>
+              <dt data-i18n="srv_dt_contact">담당</dt><dd data-i18n="srv8_contact">교육팀</dd>
+              <dt data-i18n="srv_dt_time">소요</dt><dd data-i18n="srv8_time">학기제</dd>
+            </dl>
+          </div>
+          <a href="#" class="btn btn-primary" data-i18n="srv_btn">신청하기</a>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap foot-bottom">
+    <div>© 2026 원하다 (Onehada). All rights reserved.</div>
+    <div data-i18n="foot_note">본 사이트는 WCAG 2.1 AA 기준을 따릅니다.</div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-i18n="title_support">후원·참여 — 원하다</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main" data-i18n="skip">본문으로 건너뛰기</a>
+<header class="site-header">
+  <div class="wrap nav">
+    <a href="index.html" class="brand">
+      <span class="brand-mark" aria-hidden="true">원</span>
+      <span data-i18n="brand">원하다</span>
+    </a>
+    <nav class="nav-links" id="navLinks" aria-label="주 메뉴">
+      <a href="index.html" data-i18n="nav_home">홈</a>
+      <a href="services.html" data-i18n="nav_services">서비스</a>
+      <a href="stories.html" data-i18n="nav_stories">스토리</a>
+      <a href="support.html" class="active" data-i18n="nav_support">후원·참여</a>
+      <a href="about.html" data-i18n="nav_about">단체 소개</a>
+    </nav>
+    <div class="nav-actions">
+      <div class="lang-toggle" role="group" aria-label="언어 선택" data-i18n-attr="aria-label:lang_label">
+        <button data-lang="ko" aria-pressed="true">KO</button>
+        <button data-lang="ru" aria-pressed="false">RU</button>
+        <button data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <a href="support.html" class="btn btn-primary" data-i18n="cta_donate">후원하기</a>
+      <button class="menu-btn" id="menuBtn" aria-label="메뉴 열기" aria-expanded="false" data-i18n-attr="aria-label:menu_open">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="page-head">
+    <div class="wrap">
+      <div class="crumb"><span data-i18n="crumb_home">홈</span> / <span data-i18n="sup_crumb_self">후원·참여</span></div>
+      <h1 data-i18n="sup_title">한 사람의 정착을 함께 만들어요</h1>
+      <p data-i18n="sup_desc">매월 작은 후원이 모여 한 가정의 한 달을 잇습니다. 후원금 사업비 집행률은 94%입니다.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap" style="display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:start">
+      <div class="donate-card" id="donate">
+        <h2 style="margin:0 0 20px;font-size:24px" data-i18n="sup_form_h">후원하기</h2>
+
+        <label style="font-size:13px;font-weight:700;color:var(--color-ink-soft)" data-i18n="sup_label_freq">방식</label>
+        <div class="toggle-row" id="freq" role="group" aria-label="후원 방식">
+          <button data-freq="monthly" aria-pressed="true" data-i18n="sup_freq_m">정기 (매월)</button>
+          <button data-freq="onetime" aria-pressed="false" data-i18n="sup_freq_o">일시</button>
+        </div>
+
+        <label style="font-size:13px;font-weight:700;color:var(--color-ink-soft)" data-i18n="sup_label_amount">금액</label>
+        <div class="amounts" id="amount" role="group" aria-label="후원 금액">
+          <button data-amount="10000" aria-pressed="false" data-i18n="sup_amt1">1만원</button>
+          <button data-amount="20000" aria-pressed="true" data-i18n="sup_amt2">2만원</button>
+          <button data-amount="50000" aria-pressed="false" data-i18n="sup_amt3">5만원</button>
+          <button data-amount="100000" aria-pressed="false" data-i18n="sup_amt4">10만원</button>
+        </div>
+        <input type="number" id="customAmount" placeholder="직접 입력 (원)" inputmode="numeric"
+               data-i18n-attr="placeholder:sup_custom"
+               style="width:100%;padding:14px;border:1.5px solid var(--color-line);border-radius:12px;font-size:15px;margin-bottom:18px">
+
+        <div style="display:grid;gap:10px;margin-bottom:8px">
+          <input type="text" placeholder="이름" data-i18n-attr="placeholder:sup_input_name" style="padding:14px;border:1.5px solid var(--color-line);border-radius:12px;font-size:15px">
+          <input type="email" placeholder="이메일" data-i18n-attr="placeholder:sup_input_email" style="padding:14px;border:1.5px solid var(--color-line);border-radius:12px;font-size:15px">
+        </div>
+
+        <label style="display:flex;gap:8px;font-size:13px;color:var(--color-ink-soft);margin:14px 0 18px">
+          <input type="checkbox" required>
+          <span data-i18n="sup_consent">개인정보 수집·이용 및 결제 안내에 동의합니다.</span>
+        </label>
+
+        <button type="button" class="btn btn-primary btn-lg" style="width:100%;justify-content:center">
+          <span id="submitLabel">매월 20,000원 후원 시작</span>
+        </button>
+      </div>
+
+      <div>
+        <h2 style="margin:0 0 8px" data-i18n="sup_alloc_h">후원금은 이렇게 쓰입니다</h2>
+        <p class="lead" data-i18n="sup_alloc_lead">모든 후원은 사업비 → 운영비 순으로 우선 배분됩니다.</p>
+        <div class="kpi-grid" style="grid-template-columns:1fr 1fr">
+          <div class="kpi"><div class="num">62%</div><div class="lbl" data-i18n="sup_alloc1">서비스 직접 집행</div></div>
+          <div class="kpi"><div class="num">22%</div><div class="lbl" data-i18n="sup_alloc2">콘텐츠·캠페인</div></div>
+          <div class="kpi"><div class="num">10%</div><div class="lbl" data-i18n="sup_alloc3">긴급지원 적립</div></div>
+          <div class="kpi"><div class="num">6%</div><div class="lbl" data-i18n="sup_alloc4">운영·관리</div></div>
+        </div>
+
+        <h3 style="margin:32px 0 8px" id="volunteer" data-i18n="sup_volun_h">자원봉사 / 재능기부</h3>
+        <p style="color:var(--color-ink-soft);margin:0 0 16px" data-i18n="sup_volun_p">한국어 튜터, 의료 통역, 디자인·번역 등 다양한 형태로 참여할 수 있습니다.</p>
+        <a href="#" class="btn btn-ghost" data-i18n="sup_volun_btn">자원봉사 신청서 작성 →</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap foot-bottom">
+    <div>© 2026 원하다 (Onehada). All rights reserved.</div>
+    <div data-i18n="foot_note">본 사이트는 WCAG 2.1 AA 기준을 따릅니다.</div>
+  </div>
+</footer>
+<script src="script.js"></script>
+</body>
+</html>
