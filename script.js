@@ -623,10 +623,14 @@ const I18N = {
 function applyLang(lang) {
   if (!I18N[lang]) lang = "ko";
   const dict = I18N[lang];
+  const copyOverrides = window.__copyOverrides || {};
   document.documentElement.lang = lang;
   document.querySelectorAll("[data-i18n]").forEach((el) => {
     const key = el.getAttribute("data-i18n");
-    if (dict[key] != null) el.innerHTML = dict[key];
+    const override = copyOverrides[key];
+    const overrideText = override && typeof override === "object" ? (override[lang] || override.ko || override.en || override.ru || "") : "";
+    const finalText = overrideText || dict[key];
+    if (finalText != null) el.innerHTML = finalText;
   });
   document.querySelectorAll("[data-i18n-attr]").forEach((el) => {
     // format: "attr:key,attr:key"
@@ -644,7 +648,10 @@ function applyLang(lang) {
   // re-render dynamic donate label if present
   if (typeof renderDonateLabel === "function") renderDonateLabel();
   if (typeof updateCustomThemeCopy === "function") updateCustomThemeCopy();
+  window.dispatchEvent(new CustomEvent("onehada:langchange", { detail: { lang } }));
 }
+
+window.applyLang = applyLang;
 
 let renderDonateLabel = null;
 
@@ -987,7 +994,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ===== Campaign hero slider =====
   const cmpTrack = document.getElementById("cmpTrack");
   if (cmpTrack) {
-    const slides = Array.from(cmpTrack.children);
+    let slides = Array.from(cmpTrack.children);
     const prev = document.getElementById("cmpPrev");
     const next = document.getElementById("cmpNext");
     const cur = document.getElementById("cmpCur");
@@ -1000,10 +1007,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const TICK = 50;
     let idx = 0, elapsed = 0, timer = null, paused = false;
 
-    if (total) total.textContent = String(slides.length).padStart(2, "0");
+    function refreshSlides() {
+      slides = Array.from(cmpTrack.children);
+      if (idx >= slides.length) idx = 0;
+      if (total) total.textContent = String(slides.length).padStart(2, "0");
+      updateUi();
+    }
 
-    function slideW() { return slides[0].getBoundingClientRect().width; }
+    refreshSlides();
+
+    function slideW() { return slides[0]?.getBoundingClientRect().width || 1; }
     function go(to, smooth = true) {
+      if (!slides.length) return;
       idx = (to + slides.length) % slides.length;
       cmpTrack.scrollTo({ left: idx * slideW(), behavior: smooth ? "smooth" : "auto" });
       elapsed = 0; updateUi();
@@ -1054,6 +1069,10 @@ document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener("visibilitychange", () => setPaused(document.hidden));
     window.addEventListener("resize", () => {
       cmpTrack.scrollTo({ left: idx * slideW(), behavior: "auto" });
+    });
+    window.addEventListener("onehada:campaigns-rendered", () => {
+      refreshSlides();
+      cmpTrack.scrollTo({ left: 0, behavior: "auto" });
     });
     updateUi(); start();
   }
