@@ -12,6 +12,22 @@ const I18N = {
     crumb_home: "홈",
     menu_open: "메뉴 열기",
     lang_label: "언어 선택",
+    theme_open: "디자인 테마 선택",
+    theme_close: "테마 패널 닫기",
+    theme_panel_title: "디자인 테마 선택",
+    theme_panel_desc: "원하다의 분위기를 비교해보고 결정하세요.",
+    theme_terracotta_name: "Terracotta Warmth",
+    theme_terracotta_desc: "따뜻한 흙빛과 크림 베이스의 현재 방향.",
+    theme_hanji_name: "Hanji Ink",
+    theme_hanji_desc: "한지, 먹, 단청의 차분한 한국적 대비.",
+    theme_hanbok_name: "Hanbok Pastel",
+    theme_hanbok_desc: "한복 담채처럼 부드럽고 밝은 팔레트.",
+    theme_sunset_name: "Korean Sunset",
+    theme_sunset_desc: "원하다 본가의 금빛 온기를 살린 노을 톤.",
+    theme_reunion_name: "Reunion Blue",
+    theme_reunion_desc: "통일과 평화를 떠올리는 맑은 청록 계열.",
+    theme_cocoa_name: "Cocoa Night",
+    theme_cocoa_desc: "차분한 다크 모드와 따뜻한 골드 포인트.",
     foot_about: "한민족 디아스포라가 한국에서 안정적으로 정착할 수 있도록, 실무적 도움으로 잇는 연합단체.",
     foot_quick: "바로가기", foot_contact: "연락", foot_trust: "투명성",
     foot_addr: "서울시 ○○구 ○○로 00",
@@ -207,6 +223,22 @@ const I18N = {
     crumb_home: "Главная",
     menu_open: "Открыть меню",
     lang_label: "Выбор языка",
+    theme_open: "Выбрать дизайн-тему",
+    theme_close: "Закрыть панель тем",
+    theme_panel_title: "Выберите дизайн-тему",
+    theme_panel_desc: "Сравните настроение Onehada и выберите вариант.",
+    theme_terracotta_name: "Terracotta Warmth",
+    theme_terracotta_desc: "Тёплая земляная палитра и кремовая база.",
+    theme_hanji_name: "Hanji Ink",
+    theme_hanji_desc: "Ханджи, тушь и спокойный контраст данчхон.",
+    theme_hanbok_name: "Hanbok Pastel",
+    theme_hanbok_desc: "Мягкая светлая палитра в духе ханбока.",
+    theme_sunset_name: "Korean Sunset",
+    theme_sunset_desc: "Золотое тепло основного сайта Onehada.",
+    theme_reunion_name: "Reunion Blue",
+    theme_reunion_desc: "Чистый сине-зелёный тон единства и мира.",
+    theme_cocoa_name: "Cocoa Night",
+    theme_cocoa_desc: "Спокойный тёмный режим с тёплым золотом.",
     foot_about: "Объединение, которое помогает корейской диаспоре закрепиться в Корее на практике.",
     foot_quick: "Быстрые ссылки", foot_contact: "Контакты", foot_trust: "Прозрачность",
     foot_addr: "г. Сеул, район ○○, ул. ○○ 00",
@@ -392,6 +424,22 @@ const I18N = {
     crumb_home: "Home",
     menu_open: "Open menu",
     lang_label: "Choose language",
+    theme_open: "Choose design theme",
+    theme_close: "Close theme panel",
+    theme_panel_title: "Choose a design theme",
+    theme_panel_desc: "Compare Onehada moods before deciding.",
+    theme_terracotta_name: "Terracotta Warmth",
+    theme_terracotta_desc: "The current warm earth and cream direction.",
+    theme_hanji_name: "Hanji Ink",
+    theme_hanji_desc: "Hanji paper, ink, and calm dancheong contrast.",
+    theme_hanbok_name: "Hanbok Pastel",
+    theme_hanbok_desc: "A soft, bright palette inspired by hanbok dyes.",
+    theme_sunset_name: "Korean Sunset",
+    theme_sunset_desc: "Golden warmth inspired by the main Onehada site.",
+    theme_reunion_name: "Reunion Blue",
+    theme_reunion_desc: "Clear blue-green tones for reunion and peace.",
+    theme_cocoa_name: "Cocoa Night",
+    theme_cocoa_desc: "A calm dark mode with warm gold accents.",
     foot_about: "A coalition helping the Korean diaspora settle in South Korea through practical support.",
     foot_quick: "Quick links", foot_contact: "Contact", foot_trust: "Transparency",
     foot_addr: "○○-ro 00, ○○-gu, Seoul",
@@ -599,7 +647,29 @@ function applyLang(lang) {
 
 let renderDonateLabel = null;
 
+const THEMES = ["terracotta", "hanji", "hanbok", "sunset", "reunion", "cocoa-night"];
+
+function readSavedTheme() {
+  try {
+    const saved = localStorage.getItem("onehada.theme");
+    return THEMES.includes(saved) ? saved : "terracotta";
+  } catch {
+    return "terracotta";
+  }
+}
+
+function applyTheme(theme) {
+  if (!THEMES.includes(theme)) theme = "terracotta";
+  document.documentElement.setAttribute("data-theme", theme);
+  document.querySelectorAll(".theme-card").forEach((card) => {
+    card.setAttribute("aria-pressed", card.dataset.themeOption === theme ? "true" : "false");
+  });
+  try { localStorage.setItem("onehada.theme", theme); } catch {}
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  applyTheme(readSavedTheme());
+
   // Lang toggle
   const saved = (() => { try { return localStorage.getItem("onehada.lang"); } catch { return null; } })();
   applyLang(saved || "ko");
@@ -614,6 +684,65 @@ document.addEventListener("DOMContentLoaded", () => {
     menuBtn.addEventListener("click", () => {
       const open = navLinks.classList.toggle("open");
       menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+  }
+
+  // Theme picker
+  const themeBtn = document.getElementById("themeBtn");
+  const themeOverlay = document.getElementById("themeOverlay");
+  const themePanel = themeOverlay && themeOverlay.querySelector(".theme-panel");
+  const themeClose = document.getElementById("themeClose");
+  const themeCards = Array.from(document.querySelectorAll(".theme-card"));
+  let lastThemeFocus = null;
+
+  function closeThemePanel() {
+    if (!themeOverlay || !themeBtn) return;
+    themeOverlay.classList.remove("open");
+    themeOverlay.setAttribute("aria-hidden", "true");
+    themeBtn.setAttribute("aria-expanded", "false");
+    document.body.classList.remove("theme-lock");
+    (lastThemeFocus || themeBtn).focus();
+  }
+
+  function openThemePanel() {
+    if (!themeOverlay || !themePanel || !themeBtn) return;
+    lastThemeFocus = document.activeElement;
+    themeOverlay.classList.add("open");
+    themeOverlay.setAttribute("aria-hidden", "false");
+    themeBtn.setAttribute("aria-expanded", "true");
+    document.body.classList.add("theme-lock");
+    const active = themeOverlay.querySelector('.theme-card[aria-pressed="true"]');
+    (active || themePanel).focus();
+  }
+
+  if (themeBtn && themeOverlay) {
+    themeBtn.addEventListener("click", openThemePanel);
+    themeClose && themeClose.addEventListener("click", closeThemePanel);
+    themeOverlay.addEventListener("click", (e) => {
+      if (e.target === themeOverlay) closeThemePanel();
+    });
+    themeCards.forEach((card) => {
+      card.addEventListener("click", () => applyTheme(card.dataset.themeOption));
+    });
+    themeOverlay.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        closeThemePanel();
+        return;
+      }
+      if (e.key !== "Tab") return;
+      const focusables = Array.from(themeOverlay.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
+        .filter((el) => !el.disabled && el.offsetParent !== null);
+      if (!focusables.length) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     });
   }
 
