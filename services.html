@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title data-i18n="title_services">서비스 — 원하다</title>
+<script>(function(){try{var t=localStorage.getItem('onehada.theme')||'terracotta';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -28,6 +29,9 @@
         <button data-lang="ru" aria-pressed="false">RU</button>
         <button data-lang="en" aria-pressed="false">EN</button>
       </div>
+      <button class="theme-btn" id="themeBtn" type="button" aria-haspopup="dialog" aria-expanded="false" aria-label="테마 선택" data-i18n-attr="aria-label:theme_open">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22a10 10 0 1 1 10-10c0 1.7-1.3 3-3 3h-2.2c-.7 0-1.2.5-1.2 1.2 0 .3.1.6.3.8.2.3.3.6.3.9 0 1.2-1.8 4.1-4.2 4.1Z"/><circle cx="7.5" cy="10.5" r="1"/><circle cx="10.5" cy="7.5" r="1"/><circle cx="14.5" cy="7.5" r="1"/><circle cx="16.5" cy="11.5" r="1"/></svg>
+      </button>
       <a href="support.html" class="btn btn-primary" data-i18n="cta_donate">후원하기</a>
       <button class="menu-btn" id="menuBtn" aria-label="메뉴 열기" aria-expanded="false" data-i18n-attr="aria-label:menu_open">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
@@ -179,6 +183,26 @@
     </div>
   </section>
 </main>
+
+<div class="theme-overlay" id="themeOverlay" aria-hidden="true">
+  <section class="theme-panel" role="dialog" aria-modal="true" aria-labelledby="themeTitle" tabindex="-1">
+    <div class="theme-panel-head">
+      <div>
+        <h2 id="themeTitle" data-i18n="theme_panel_title">디자인 테마 선택</h2>
+        <p data-i18n="theme_panel_desc">원하다의 분위기를 비교해보고 결정하세요.</p>
+      </div>
+      <button class="theme-close" id="themeClose" type="button" aria-label="닫기" data-i18n-attr="aria-label:theme_close">×</button>
+    </div>
+    <div class="theme-grid" role="group" aria-label="디자인 테마">
+      <button class="theme-card" type="button" data-theme-option="terracotta" aria-pressed="true"><span class="theme-swatches"><span style="background:#FAF3E4"></span><span style="background:#FFFBF1"></span><span style="background:#2B1F17"></span><span style="background:#C25A3A"></span></span><span class="theme-copy"><strong data-i18n="theme_terracotta_name">Terracotta Warmth</strong><small data-i18n="theme_terracotta_desc">따뜻한 흙빛과 크림 베이스의 현재 방향.</small></span><span class="theme-current" aria-hidden="true">✓</span></button>
+      <button class="theme-card" type="button" data-theme-option="hanji" aria-pressed="false"><span class="theme-swatches"><span style="background:#F8F4EA"></span><span style="background:#FFFDF6"></span><span style="background:#1F1A14"></span><span style="background:#B83A2E"></span></span><span class="theme-copy"><strong data-i18n="theme_hanji_name">Hanji Ink</strong><small data-i18n="theme_hanji_desc">한지, 먹, 단청의 차분한 한국적 대비.</small></span><span class="theme-current" aria-hidden="true">✓</span></button>
+      <button class="theme-card" type="button" data-theme-option="hanbok" aria-pressed="false"><span class="theme-swatches"><span style="background:#F7F4F8"></span><span style="background:#FFFFFF"></span><span style="background:#3A2A3D"></span><span style="background:#C65F87"></span></span><span class="theme-copy"><strong data-i18n="theme_hanbok_name">Hanbok Pastel</strong><small data-i18n="theme_hanbok_desc">한복 담채처럼 부드럽고 밝은 팔레트.</small></span><span class="theme-current" aria-hidden="true">✓</span></button>
+      <button class="theme-card" type="button" data-theme-option="sunset" aria-pressed="false"><span class="theme-swatches"><span style="background:#FFF4D9"></span><span style="background:#FFFAEC"></span><span style="background:#3A2410"></span><span style="background:#E07B2D"></span></span><span class="theme-copy"><strong data-i18n="theme_sunset_name">Korean Sunset</strong><small data-i18n="theme_sunset_desc">원하다 본가의 금빛 온기를 살린 노을 톤.</small></span><span class="theme-current" aria-hidden="true">✓</span></button>
+      <button class="theme-card" type="button" data-theme-option="reunion" aria-pressed="false"><span class="theme-swatches"><span style="background:#F4F8FA"></span><span style="background:#FFFFFF"></span><span style="background:#172A33"></span><span style="background:#2A6F7A"></span></span><span class="theme-copy"><strong data-i18n="theme_reunion_name">Reunion Blue</strong><small data-i18n="theme_reunion_desc">통일과 평화를 떠올리는 맑은 청록 계열.</small></span><span class="theme-current" aria-hidden="true">✓</span></button>
+      <button class="theme-card" type="button" data-theme-option="cocoa-night" aria-pressed="false"><span class="theme-swatches"><span style="background:#1A120D"></span><span style="background:#241812"></span><span style="background:#F2E6CF"></span><span style="background:#E9B86A"></span></span><span class="theme-copy"><strong data-i18n="theme_cocoa_name">Cocoa Night</strong><small data-i18n="theme_cocoa_desc">차분한 다크 모드와 따뜻한 골드 포인트.</small></span><span class="theme-current" aria-hidden="true">✓</span></button>
+    </div>
+  </section>
+</div>
 
 <footer class="site-footer">
   <div class="wrap foot-bottom">
