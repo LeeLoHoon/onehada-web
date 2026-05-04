@@ -2,6 +2,8 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/fireba
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 import { getStorage } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-storage.js";
 
+export const FIREBASE_DISABLED = true;
+
 export const firebaseConfig = {
   apiKey: "AIzaSyAwu-A5lJpdogZnQCIvyE4lnjqKqdbeDyM",
   authDomain: "onehada-de0bc.firebaseapp.com",
@@ -13,6 +15,10 @@ export const firebaseConfig = {
 };
 
 export function isFirebaseConfigured() {
+  if (FIREBASE_DISABLED) {
+    return false;
+  }
+
   const values = Object.values(firebaseConfig);
   if (!values.every((v) => typeof v === "string" && v.trim().length > 0)) {
     return false;
@@ -27,6 +33,10 @@ let db = null;
 let storage = null;
 
 export function getFirebaseServices() {
+  if (FIREBASE_DISABLED) {
+    return { app: null, db: null, storage: null };
+  }
+
   if (!isFirebaseConfigured()) {
     return { app: null, db: null, storage: null };
   }
