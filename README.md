@@ -126,10 +126,10 @@ service firebase.storage {
 ### 3) 관리자 페이지 사용
 
 - `site-config.js`에서 URL 기준값을 관리
-  - `siteConfig.userBasePath`: 사용자용 base URL 경로(기본 `/`)
+  - `siteConfig.userBasePath`: 사용자용 base URL 경로(현재 GitHub Pages 기준 `/onehada-web`)
   - `siteConfig.adminSlug`: 관리자 페이지 slug(기본 `manage-9c3f`)
 - 관리자 URL: ``${userBasePath}/${adminSlug}.html``
-  - 기본값 기준: `manage-9c3f.html` 접속
+  - 현재 GitHub Pages 기준: `/onehada-web/manage-9c3f.html` 접속
 - URL 진입 후 Stories / Campaigns / Copy overrides CRUD 가능
 - 이미지 업로드 제약: 이미지 파일만 허용, 5MB 초과 차단
 - 삭제는 영구 삭제가 아니라 `archived:true` soft delete 처리

@@ -1,7 +1,7 @@
 const trimTrailingSlash = (value) => String(value || "").replace(/\/+$/, "");
 
 export const siteConfig = {
-  userBasePath: "/",
+  userBasePath: "/onehada-web",
   adminSlug: "manage-9c3f",
 };
 
