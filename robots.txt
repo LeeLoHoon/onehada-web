@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+# Keep in sync with site-config.js (siteConfig.adminSlug)
+Disallow: /manage-9c3f.html
