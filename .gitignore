@@ -2,4 +2,12 @@
 node_modules/
 .vscode/
 .idea/
+.playwright-mcp/
 *.log
+.env
+.env.*
+!.env.example
+.firebase/
+firebase-debug.log
+firestore-debug.log
+storage-debug.log
