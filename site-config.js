@@ -23,5 +23,6 @@ export function getUserHomeUrl() {
 export function isOnAdminUrl(locationLike = window.location) {
   const currentPath = trimTrailingSlash(locationLike?.pathname || "");
   const adminPath = trimTrailingSlash(getAdminUrl());
-  return currentPath === adminPath;
+  const localAdminPath = trimTrailingSlash(`/${siteConfig.adminSlug}.html`);
+  return currentPath === adminPath || currentPath === localAdminPath;
 }
