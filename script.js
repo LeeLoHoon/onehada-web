@@ -643,33 +643,259 @@ function applyLang(lang) {
 
   // re-render dynamic donate label if present
   if (typeof renderDonateLabel === "function") renderDonateLabel();
+  if (typeof updateCustomThemeCopy === "function") updateCustomThemeCopy();
 }
 
 let renderDonateLabel = null;
 
 const THEMES = ["terracotta", "hanji", "hanbok", "sunset", "reunion", "cocoa-night"];
+const CUSTOM_THEME_KEY = "custom";
+const CUSTOM_THEME_STORAGE = "onehada.customTheme";
+const CUSTOM_THEME_DEFAULT = {
+  bg: "#FAF3E4",
+  surface: "#FFFBF1",
+  ink: "#2B1F17",
+  accent: "#C25A3A",
+};
+const CUSTOM_THEME_VARS = [
+  "--color-bg", "--color-surface", "--color-surface-2", "--color-ink", "--color-ink-soft", "--color-line",
+  "--color-accent", "--color-accent-soft", "--color-accent-deep", "--color-warm", "--color-rose", "--color-cocoa",
+  "--color-olive", "--color-gold", "--brand-grad", "--header-bg", "--cmp-bg", "--cmp-grad-1", "--cmp-grad-2",
+  "--cmp-grad-3", "--cmp-grad-4", "--cmp-grad-5", "--story-grad-1", "--story-grad-2", "--story-grad-3",
+  "--support-grad", "--footer-bg", "--footer-text", "--footer-heading", "--footer-line", "--footer-muted", "--shadow-card",
+];
 
 function readSavedTheme() {
   try {
     const saved = localStorage.getItem("onehada.theme");
+    if (saved === CUSTOM_THEME_KEY && readCustomTheme()) return CUSTOM_THEME_KEY;
     return THEMES.includes(saved) ? saved : "terracotta";
   } catch {
     return "terracotta";
   }
 }
 
+function normalizeHex(value, fallback) {
+  const hex = String(value || "").trim();
+  return /^#[0-9a-f]{6}$/i.test(hex) ? hex.toUpperCase() : fallback;
+}
+
+function hexToRgb(hex) {
+  const clean = normalizeHex(hex, "#000000").slice(1);
+  return {
+    r: parseInt(clean.slice(0, 2), 16),
+    g: parseInt(clean.slice(2, 4), 16),
+    b: parseInt(clean.slice(4, 6), 16),
+  };
+}
+
+function rgbToHex({ r, g, b }) {
+  return `#${[r, g, b].map((n) => Math.round(Math.max(0, Math.min(255, n))).toString(16).padStart(2, "0")).join("")}`.toUpperCase();
+}
+
+function mixHex(from, to, toWeight) {
+  const a = hexToRgb(from);
+  const b = hexToRgb(to);
+  const w = Math.max(0, Math.min(1, toWeight));
+  return rgbToHex({
+    r: a.r * (1 - w) + b.r * w,
+    g: a.g * (1 - w) + b.g * w,
+    b: a.b * (1 - w) + b.b * w,
+  });
+}
+
+function rgbaHex(hex, alpha) {
+  const rgb = hexToRgb(hex);
+  return `rgba(${rgb.r},${rgb.g},${rgb.b},${alpha})`;
+}
+
+function sanitizeCustomTheme(theme) {
+  const source = theme || {};
+  return {
+    bg: normalizeHex(source.bg, CUSTOM_THEME_DEFAULT.bg),
+    surface: normalizeHex(source.surface, CUSTOM_THEME_DEFAULT.surface),
+    ink: normalizeHex(source.ink, CUSTOM_THEME_DEFAULT.ink),
+    accent: normalizeHex(source.accent, CUSTOM_THEME_DEFAULT.accent),
+  };
+}
+
+function readCustomTheme() {
+  try {
+    const raw = localStorage.getItem(CUSTOM_THEME_STORAGE);
+    return raw ? sanitizeCustomTheme(JSON.parse(raw)) : null;
+  } catch {
+    return null;
+  }
+}
+
+function saveCustomTheme(theme) {
+  const next = sanitizeCustomTheme(theme);
+  try { localStorage.setItem(CUSTOM_THEME_STORAGE, JSON.stringify(next)); } catch {}
+  return next;
+}
+
+function customThemeVars(theme) {
+  const colors = sanitizeCustomTheme(theme);
+  const surface2 = mixHex(colors.surface, colors.accent, .14);
+  const accentSoft = mixHex(colors.accent, colors.surface, .72);
+  const accentDeep = mixHex(colors.accent, colors.ink, .38);
+  const warm = mixHex(colors.accent, "#F2A65A", .36);
+  const rose = mixHex(colors.accent, "#B86B5C", .4);
+  const cocoa = mixHex(colors.ink, colors.accent, .28);
+  const olive = mixHex(colors.accent, "#8A7A4A", .45);
+  const gold = mixHex(colors.accent, "#D7A24A", .48);
+  const footerBg = mixHex(colors.ink, "#000000", .28);
+  return {
+    "--color-bg": colors.bg,
+    "--color-surface": colors.surface,
+    "--color-surface-2": surface2,
+    "--color-ink": colors.ink,
+    "--color-ink-soft": mixHex(colors.ink, colors.bg, .34),
+    "--color-line": mixHex(colors.ink, colors.bg, .78),
+    "--color-accent": colors.accent,
+    "--color-accent-soft": accentSoft,
+    "--color-accent-deep": accentDeep,
+    "--color-warm": warm,
+    "--color-rose": rose,
+    "--color-cocoa": cocoa,
+    "--color-olive": olive,
+    "--color-gold": gold,
+    "--brand-grad": `linear-gradient(135deg, ${colors.accent} 0%, ${warm} 60%, ${gold} 100%)`,
+    "--header-bg": rgbaHex(colors.bg, .9),
+    "--cmp-bg": footerBg,
+    "--cmp-grad-1": `linear-gradient(135deg, ${colors.accent} 0%, ${accentDeep} 62%, ${footerBg} 100%)`,
+    "--cmp-grad-2": `linear-gradient(135deg, ${warm} 0%, ${rose} 62%, ${footerBg} 100%)`,
+    "--cmp-grad-3": `linear-gradient(135deg, ${cocoa} 0%, ${accentDeep} 62%, ${footerBg} 100%)`,
+    "--cmp-grad-4": `linear-gradient(135deg, ${gold} 0%, ${olive} 62%, ${footerBg} 100%)`,
+    "--cmp-grad-5": `linear-gradient(135deg, ${colors.ink} 0%, ${cocoa} 62%, ${footerBg} 100%)`,
+    "--story-grad-1": `linear-gradient(135deg, ${warm} 0%, ${colors.accent} 100%)`,
+    "--story-grad-2": `linear-gradient(135deg, ${rose} 0%, ${accentDeep} 100%)`,
+    "--story-grad-3": `linear-gradient(135deg, ${gold} 0%, ${olive} 100%)`,
+    "--support-grad": `linear-gradient(135deg, ${accentDeep} 0%, ${colors.accent} 58%, ${warm} 100%)`,
+    "--footer-bg": footerBg,
+    "--footer-text": mixHex(colors.surface, colors.ink, .24),
+    "--footer-heading": colors.surface,
+    "--footer-line": mixHex(footerBg, colors.surface, .16),
+    "--footer-muted": mixHex(colors.surface, colors.ink, .42),
+    "--shadow-card": `0 1px 2px ${rgbaHex(colors.ink, .05)}, 0 10px 28px ${rgbaHex(colors.accent, .1)}`,
+  };
+}
+
+function clearCustomThemeVars() {
+  CUSTOM_THEME_VARS.forEach((name) => document.documentElement.style.removeProperty(name));
+}
+
+function applyCustomTheme(theme) {
+  const next = saveCustomTheme(theme);
+  document.documentElement.setAttribute("data-theme", CUSTOM_THEME_KEY);
+  Object.entries(customThemeVars(next)).forEach(([name, value]) => {
+    document.documentElement.style.setProperty(name, value);
+  });
+  document.querySelectorAll(".theme-card").forEach((card) => card.setAttribute("aria-pressed", "false"));
+  document.querySelector(".theme-custom")?.setAttribute("data-active", "true");
+  try { localStorage.setItem("onehada.theme", CUSTOM_THEME_KEY); } catch {}
+  syncCustomThemeControls(next);
+}
+
 function applyTheme(theme) {
+  if (theme === CUSTOM_THEME_KEY) {
+    applyCustomTheme(readCustomTheme() || CUSTOM_THEME_DEFAULT);
+    return;
+  }
   if (!THEMES.includes(theme)) theme = "terracotta";
+  clearCustomThemeVars();
   document.documentElement.setAttribute("data-theme", theme);
   document.querySelectorAll(".theme-card").forEach((card) => {
     card.setAttribute("aria-pressed", card.dataset.themeOption === theme ? "true" : "false");
   });
+  document.querySelector(".theme-custom")?.setAttribute("data-active", "false");
   try { localStorage.setItem("onehada.theme", theme); } catch {}
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  applyTheme(readSavedTheme());
+function customThemeLabels() {
+  const lang = document.documentElement.lang || "ko";
+  const labels = {
+    ko: ["직접 색상 만들기", "배경, 카드, 글자, 강조색을 고르면 나머지 색은 자동으로 맞춰집니다.", "직접", "배경", "카드", "글자", "강조", "커스텀 적용", "기본값"],
+    ru: ["Своя палитра", "Выберите фон, карточки, текст и акцент — остальные тона подстроятся.", "Custom", "Фон", "Карточки", "Текст", "Акцент", "Применить", "Сброс"],
+    en: ["Build your own palette", "Pick background, cards, text, and accent. The rest of the theme is derived automatically.", "Custom", "Background", "Cards", "Text", "Accent", "Apply custom", "Reset"],
+  };
+  return labels[lang] || labels.ko;
+}
 
+function syncCustomThemeControls(theme) {
+  const next = sanitizeCustomTheme(theme || readCustomTheme() || CUSTOM_THEME_DEFAULT);
+  Object.entries(next).forEach(([key, value]) => {
+    const input = document.querySelector(`[data-custom-color="${key}"]`);
+    const label = document.querySelector(`[data-custom-hex="${key}"]`);
+    if (input) input.value = value;
+    if (label) label.textContent = value;
+  });
+}
+
+function updateCustomThemeCopy() {
+  const [title, desc, badge, bg, surface, ink, accent, apply, reset] = customThemeLabels();
+  const map = { title, desc, badge, bg, surface, ink, accent, apply, reset };
+  Object.entries(map).forEach(([key, value]) => {
+    document.querySelectorAll(`[data-custom-copy="${key}"]`).forEach((el) => { el.textContent = value; });
+  });
+}
+
+function mountCustomThemeControls(themePanel) {
+  if (!themePanel || themePanel.querySelector(".theme-custom")) return;
+  const [title, desc, badge, bg, surface, ink, accent, apply, reset] = customThemeLabels();
+  themePanel.insertAdjacentHTML("beforeend", `
+    <section class="theme-custom" data-active="false" aria-labelledby="customThemeTitle">
+      <div class="theme-custom-head">
+        <div>
+          <h3 id="customThemeTitle" data-custom-copy="title">${title}</h3>
+          <p data-custom-copy="desc">${desc}</p>
+        </div>
+        <span class="theme-custom-badge" data-custom-copy="badge">${badge}</span>
+      </div>
+      <div class="theme-custom-grid">
+        <div class="theme-color-field">
+          <label><span data-custom-copy="bg">${bg}</span><span class="theme-color-hex" data-custom-hex="bg"></span></label>
+          <input type="color" data-custom-color="bg" aria-label="${bg}">
+        </div>
+        <div class="theme-color-field">
+          <label><span data-custom-copy="surface">${surface}</span><span class="theme-color-hex" data-custom-hex="surface"></span></label>
+          <input type="color" data-custom-color="surface" aria-label="${surface}">
+        </div>
+        <div class="theme-color-field">
+          <label><span data-custom-copy="ink">${ink}</span><span class="theme-color-hex" data-custom-hex="ink"></span></label>
+          <input type="color" data-custom-color="ink" aria-label="${ink}">
+        </div>
+        <div class="theme-color-field">
+          <label><span data-custom-copy="accent">${accent}</span><span class="theme-color-hex" data-custom-hex="accent"></span></label>
+          <input type="color" data-custom-color="accent" aria-label="${accent}">
+        </div>
+      </div>
+      <div class="theme-preview" aria-hidden="true">
+        <div class="theme-preview-bar"></div>
+        <div class="theme-preview-body">
+          <div class="theme-preview-title"></div>
+          <div class="theme-preview-line"></div>
+          <span class="theme-preview-chip"></span>
+        </div>
+      </div>
+      <div class="theme-custom-actions">
+        <button class="btn btn-primary" type="button" id="customThemeApply" data-custom-copy="apply">${apply}</button>
+        <button class="btn btn-ghost" type="button" id="customThemeReset" data-custom-copy="reset">${reset}</button>
+      </div>
+    </section>
+  `);
+  syncCustomThemeControls(readCustomTheme() || CUSTOM_THEME_DEFAULT);
+}
+
+function readCustomThemeControls() {
+  const next = { ...CUSTOM_THEME_DEFAULT };
+  document.querySelectorAll("[data-custom-color]").forEach((input) => {
+    next[input.dataset.customColor] = input.value;
+  });
+  return sanitizeCustomTheme(next);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
   // Lang toggle
   const saved = (() => { try { return localStorage.getItem("onehada.lang"); } catch { return null; } })();
   applyLang(saved || "ko");
@@ -694,6 +920,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const themeClose = document.getElementById("themeClose");
   const themeCards = Array.from(document.querySelectorAll(".theme-card"));
   let lastThemeFocus = null;
+
+  mountCustomThemeControls(themePanel);
+  applyTheme(readSavedTheme());
 
   function closeThemePanel() {
     if (!themeOverlay || !themeBtn) return;
@@ -723,6 +952,15 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     themeCards.forEach((card) => {
       card.addEventListener("click", () => applyTheme(card.dataset.themeOption));
+    });
+    themeOverlay.querySelectorAll("[data-custom-color]").forEach((input) => {
+      input.addEventListener("input", () => applyCustomTheme(readCustomThemeControls()));
+    });
+    document.getElementById("customThemeApply")?.addEventListener("click", () => {
+      applyCustomTheme(readCustomThemeControls());
+    });
+    document.getElementById("customThemeReset")?.addEventListener("click", () => {
+      applyCustomTheme(CUSTOM_THEME_DEFAULT);
     });
     themeOverlay.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
