@@ -154,6 +154,7 @@ window.addEventListener("onehada:langchange", () => {
 
 async function run() {
   if (!isFirebaseConfigured()) {
+    console.info("[public-data] Firebase disabled or not configured. Using static fallback content.");
     window.__copyOverrides = window.__copyOverrides || {};
     return;
   }

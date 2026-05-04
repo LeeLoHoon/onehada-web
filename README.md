@@ -164,6 +164,16 @@ service firebase.storage {
   2. `archived`를 `false`로 변경
   3. ko/ru/en 값 확인 후 저장
 
+### 6) DB 연결 임시 차단/복구
+
+- `firebase-init.js`의 `FIREBASE_DISABLED`를 통해 DB 연결을 feature flag로 제어할 수 있습니다.
+- `FIREBASE_DISABLED=true`
+  - Firebase initialize/Firestore/Storage 연결을 모두 건너뜁니다.
+  - 공개 페이지는 정적 HTML fallback만 사용합니다.
+  - 관리자 페이지는 CRUD/이미지 업로드가 비활성화되고 안내 패널만 표시됩니다.
+- `FIREBASE_DISABLED=false`
+  - 기존 Firebase 연동 동작으로 즉시 복구됩니다(기존 config 유지).
+
 ## 보안 한계 (중요)
 
 - 현재 **Firebase Auth가 없습니다**.
