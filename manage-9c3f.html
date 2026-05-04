@@ -6,13 +6,14 @@
   <meta name="robots" content="noindex,nofollow">
   <title>원하다 관리자</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="admin.css">
 </head>
 <body>
   <main class="admin-wrap">
     <header class="admin-head">
       <h1>원하다 Admin</h1>
-      <p>Stories / Campaigns / Copy overrides 관리</p>
+      <p>공개 페이지 섹션 기준 CMS 관리</p>
     </header>
 
     <section id="firebaseHint" class="panel warn" hidden>
@@ -20,64 +21,178 @@
       <p><code>firebase-init.js</code> placeholder config를 실제 값으로 교체하세요.</p>
     </section>
 
-    <section id="adminApp" hidden>
-      <section class="panel">
-        <h2>Stories</h2>
-        <form id="storyForm" class="grid-form">
-          <input type="hidden" name="id">
-          <input name="order" type="number" placeholder="order" required>
-          <label><input name="published" type="checkbox"> published</label>
-          <input name="tagKo" placeholder="tag.ko" required>
-          <input name="tagRu" placeholder="tag.ru">
-          <input name="tagEn" placeholder="tag.en">
-          <input name="titleKo" placeholder="title.ko" required>
-          <input name="titleRu" placeholder="title.ru">
-          <input name="titleEn" placeholder="title.en">
-          <textarea name="descKo" placeholder="description.ko" required></textarea>
-          <textarea name="descRu" placeholder="description.ru"></textarea>
-          <textarea name="descEn" placeholder="description.en"></textarea>
-          <input name="imageUrl" placeholder="imageUrl (optional)">
-          <input name="imageFile" type="file" accept="image/*">
-          <button type="submit">저장</button>
-          <button type="button" id="storyReset">초기화</button>
-        </form>
-        <div id="storyList" class="list"></div>
-      </section>
+    <section id="dbDisabledHint" class="panel warn" hidden>
+      <h2>DB 연결 임시 비활성화 상태</h2>
+      <p>현재 <code>firebase-init.js</code>의 <code>FIREBASE_DISABLED=true</code>라서 관리자 CRUD/이미지 업로드가 비활성화되어 있습니다.</p>
+      <p>복구하려면 <code>FIREBASE_DISABLED=false</code>로 변경하세요.</p>
+    </section>
 
-      <section class="panel">
-        <h2>Campaigns</h2>
+    <section id="adminApp" hidden>
+      <section class="panel admin-section" id="section-home-campaigns">
+        <div class="section-head">
+          <h2>홈 — 캠페인 캐러셀</h2>
+          <p>홈 화면 최상단 캐러셀에 노출됩니다. published=false면 공개 페이지에 보이지 않습니다.</p>
+          <a id="linkHomeCampaigns" class="section-link" href="#" target="_blank" rel="noopener">어디에 보이나요? 홈 페이지 열기 ↗</a>
+        </div>
+        <div id="campaignList" class="preview-grid"></div>
         <form id="campaignForm" class="grid-form">
           <input type="hidden" name="id">
-          <input name="order" type="number" placeholder="order" required>
-          <label><input name="published" type="checkbox"> published</label>
-          <input name="linkUrl" placeholder="linkUrl (optional)">
-          <input name="tagKo" placeholder="tag.ko" required>
-          <input name="tagRu" placeholder="tag.ru">
-          <input name="tagEn" placeholder="tag.en">
-          <input name="titleKo" placeholder="title.ko" required>
-          <input name="titleRu" placeholder="title.ru">
-          <input name="titleEn" placeholder="title.en">
-          <textarea name="descKo" placeholder="description.ko" required></textarea>
-          <textarea name="descRu" placeholder="description.ru"></textarea>
-          <textarea name="descEn" placeholder="description.en"></textarea>
-          <input name="imageUrl" placeholder="imageUrl (optional)">
-          <input name="imageFile" type="file" accept="image/*">
-          <button type="submit">저장</button>
-          <button type="button" id="campaignReset">초기화</button>
+          <h3 class="form-title">캠페인 편집</h3>
+          <p class="form-lead">이 폼은 홈 상단 캠페인 캐러셀 콘텐츠를 수정합니다.</p>
+          <div class="field-inline">
+            <label for="campaignOrder">정렬 순서 (order)</label>
+            <input id="campaignOrder" name="order" type="number" required>
+          </div>
+          <label class="check-row"><input name="published" type="checkbox"> 공개(published)</label>
+          <div class="field-inline">
+            <label for="campaignLink">링크 URL (선택)</label>
+            <input id="campaignLink" name="linkUrl">
+          </div>
+          <div class="lang-grid">
+            <fieldset>
+              <legend>한국어 (ko)</legend>
+              <label for="campaignTagKo">태그</label><input id="campaignTagKo" name="tagKo" required>
+              <label for="campaignTitleKo">제목</label><input id="campaignTitleKo" name="titleKo" required>
+              <label for="campaignDescKo">설명</label><textarea id="campaignDescKo" name="descKo" required></textarea>
+            </fieldset>
+            <fieldset>
+              <legend>Русский (ru)</legend>
+              <label for="campaignTagRu">Tag</label><input id="campaignTagRu" name="tagRu">
+              <label for="campaignTitleRu">Title</label><input id="campaignTitleRu" name="titleRu">
+              <label for="campaignDescRu">Description</label><textarea id="campaignDescRu" name="descRu"></textarea>
+            </fieldset>
+            <fieldset>
+              <legend>English (en)</legend>
+              <label for="campaignTagEn">Tag</label><input id="campaignTagEn" name="tagEn">
+              <label for="campaignTitleEn">Title</label><input id="campaignTitleEn" name="titleEn">
+              <label for="campaignDescEn">Description</label><textarea id="campaignDescEn" name="descEn"></textarea>
+            </fieldset>
+          </div>
+          <div class="field-inline">
+            <label for="campaignImageUrl">이미지 URL (선택)</label>
+            <input id="campaignImageUrl" name="imageUrl">
+          </div>
+          <div class="field-inline">
+            <label for="campaignImageFile">이미지 업로드 (선택)</label>
+            <input id="campaignImageFile" name="imageFile" type="file" accept="image/*">
+            <small>이미지 파일만, 최대 5MB</small>
+          </div>
+          <div class="form-actions">
+            <button type="submit">캠페인 저장</button>
+            <button type="button" id="campaignReset">초기화</button>
+          </div>
         </form>
-        <div id="campaignList" class="list"></div>
       </section>
 
-      <section class="panel">
-        <h2>Copy Overrides</h2>
-        <form id="copyForm" class="grid-form">
-          <input name="key" placeholder="copy key (예: hero_title)" required>
-          <textarea name="ko" placeholder="ko"></textarea>
-          <textarea name="ru" placeholder="ru"></textarea>
-          <textarea name="en" placeholder="en"></textarea>
-          <button type="submit">저장</button>
+      <section class="panel admin-section" id="section-story-list">
+        <div class="section-head">
+          <h2>스토리 페이지 — 전체 목록</h2>
+          <p>스토리 페이지(stories.html) 본문 카드 목록입니다. 카드에서 바로 수정/삭제할 수 있습니다.</p>
+          <a id="linkStoriesPage" class="section-link" href="#" target="_blank" rel="noopener">어디에 보이나요? 스토리 페이지 열기 ↗</a>
+        </div>
+
+        <form id="storyForm" class="grid-form">
+          <input type="hidden" name="id">
+          <h3 class="form-title">스토리 페이지 — 전체 목록 편집</h3>
+          <p class="form-lead">Stories 컬렉션은 스토리 페이지 전체 목록 소스입니다. 홈 미리보기는 order 상위 3개 published 문서만 표시됩니다.</p>
+          <div class="field-inline">
+            <label for="storyOrder">정렬 순서 (order)</label>
+            <input id="storyOrder" name="order" type="number" required>
+            <small>숫자가 작을수록 먼저 노출됩니다.</small>
+          </div>
+          <label class="check-row"><input name="published" type="checkbox"> 공개(published)</label>
+
+          <div class="lang-grid">
+            <fieldset>
+              <legend>한국어 (ko)</legend>
+              <label for="storyTagKo">태그</label><input id="storyTagKo" name="tagKo" required>
+              <label for="storyTitleKo">제목</label><input id="storyTitleKo" name="titleKo" required>
+              <label for="storyDescKo">설명</label><textarea id="storyDescKo" name="descKo" required></textarea>
+            </fieldset>
+            <fieldset>
+              <legend>Русский (ru)</legend>
+              <label for="storyTagRu">Tag</label><input id="storyTagRu" name="tagRu">
+              <label for="storyTitleRu">Title</label><input id="storyTitleRu" name="titleRu">
+              <label for="storyDescRu">Description</label><textarea id="storyDescRu" name="descRu"></textarea>
+            </fieldset>
+            <fieldset>
+              <legend>English (en)</legend>
+              <label for="storyTagEn">Tag</label><input id="storyTagEn" name="tagEn">
+              <label for="storyTitleEn">Title</label><input id="storyTitleEn" name="titleEn">
+              <label for="storyDescEn">Description</label><textarea id="storyDescEn" name="descEn"></textarea>
+            </fieldset>
+          </div>
+          <div class="field-inline">
+            <label for="storyImageUrl">이미지 URL (선택)</label>
+            <input id="storyImageUrl" name="imageUrl">
+          </div>
+          <div class="field-inline">
+            <label for="storyImageFile">이미지 업로드 (선택)</label>
+            <input id="storyImageFile" name="imageFile" type="file" accept="image/*">
+            <small>이미지 파일만, 최대 5MB</small>
+          </div>
+          <div class="form-actions">
+            <button type="submit">스토리 저장</button>
+            <button type="button" id="storyReset">초기화</button>
+          </div>
         </form>
-        <div id="copyList" class="list"></div>
+        <div id="storyList" class="preview-grid"></div>
+
+      </section>
+
+      <section class="panel admin-section" id="section-home-story-preview">
+        <div class="section-head">
+          <h2>홈 — 스토리 미리보기 (preview only)</h2>
+          <p>아래는 홈 화면 "Stories" 섹션에 보이는 방식의 미리보기입니다. published=true, archived=false 기준으로 order 상위 3개만 표시됩니다.</p>
+          <a id="linkHomeStoryPreview" class="section-link" href="#" target="_blank" rel="noopener">어디에 보이나요? 홈 페이지 열기 ↗</a>
+        </div>
+        <section class="subpanel">
+          <div id="homeStoryPreview" class="story-grid"></div>
+        </section>
+      </section>
+
+      <section class="panel admin-section" id="section-copy">
+        <div class="section-head">
+          <h2>사이트 전체 텍스트 (Copy Overrides)</h2>
+          <p>아래 key는 공개 페이지의 고정 문구를 덮어씁니다. 카탈로그 선택 또는 고급 key 직접입력을 사용할 수 있습니다.</p>
+          <a id="linkHomeCopy" class="section-link" href="#" target="_blank" rel="noopener">어디에 보이나요? 홈 페이지 열기 ↗</a>
+        </div>
+        <form id="copyForm" class="grid-form">
+          <h3 class="form-title">Copy key 편집</h3>
+          <div class="field-inline">
+            <label for="copyCatalog">카탈로그 key 선택</label>
+            <select id="copyCatalog" name="catalogKey"></select>
+            <small>선택하면 아래 key 입력란에 반영됩니다.</small>
+          </div>
+          <details>
+            <summary>고급 옵션: key 직접 입력</summary>
+            <div class="field-inline">
+              <label for="copyKey">copy key</label>
+              <input id="copyKey" name="key" required>
+            </div>
+          </details>
+          <div class="lang-grid">
+            <fieldset>
+              <legend>한국어 (ko)</legend>
+              <label for="copyKo">문구</label>
+              <textarea id="copyKo" name="ko"></textarea>
+            </fieldset>
+            <fieldset>
+              <legend>Русский (ru)</legend>
+              <label for="copyRu">Текст</label>
+              <textarea id="copyRu" name="ru"></textarea>
+            </fieldset>
+            <fieldset>
+              <legend>English (en)</legend>
+              <label for="copyEn">Text</label>
+              <textarea id="copyEn" name="en"></textarea>
+            </fieldset>
+          </div>
+          <div class="form-actions">
+            <button type="submit">Copy 저장</button>
+          </div>
+        </form>
+        <div id="copyList" class="list copy-list"></div>
       </section>
     </section>
   </main>
