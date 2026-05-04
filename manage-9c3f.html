@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>원하다 관리자</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <main class="admin-wrap">
+    <header class="admin-head">
+      <h1>원하다 Admin</h1>
+      <p>Stories / Campaigns / Copy overrides 관리</p>
+    </header>
+
+    <section id="firebaseHint" class="panel warn" hidden>
+      <h2>Firebase 설정 필요</h2>
+      <p><code>firebase-init.js</code> placeholder config를 실제 값으로 교체하세요.</p>
+    </section>
+
+    <section id="adminApp" hidden>
+      <section class="panel">
+        <h2>Stories</h2>
+        <form id="storyForm" class="grid-form">
+          <input type="hidden" name="id">
+          <input name="order" type="number" placeholder="order" required>
+          <label><input name="published" type="checkbox"> published</label>
+          <input name="tagKo" placeholder="tag.ko" required>
+          <input name="tagRu" placeholder="tag.ru">
+          <input name="tagEn" placeholder="tag.en">
+          <input name="titleKo" placeholder="title.ko" required>
+          <input name="titleRu" placeholder="title.ru">
+          <input name="titleEn" placeholder="title.en">
+          <textarea name="descKo" placeholder="description.ko" required></textarea>
+          <textarea name="descRu" placeholder="description.ru"></textarea>
+          <textarea name="descEn" placeholder="description.en"></textarea>
+          <input name="imageUrl" placeholder="imageUrl (optional)">
+          <input name="imageFile" type="file" accept="image/*">
+          <button type="submit">저장</button>
+          <button type="button" id="storyReset">초기화</button>
+        </form>
+        <div id="storyList" class="list"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Campaigns</h2>
+        <form id="campaignForm" class="grid-form">
+          <input type="hidden" name="id">
+          <input name="order" type="number" placeholder="order" required>
+          <label><input name="published" type="checkbox"> published</label>
+          <input name="linkUrl" placeholder="linkUrl (optional)">
+          <input name="tagKo" placeholder="tag.ko" required>
+          <input name="tagRu" placeholder="tag.ru">
+          <input name="tagEn" placeholder="tag.en">
+          <input name="titleKo" placeholder="title.ko" required>
+          <input name="titleRu" placeholder="title.ru">
+          <input name="titleEn" placeholder="title.en">
+          <textarea name="descKo" placeholder="description.ko" required></textarea>
+          <textarea name="descRu" placeholder="description.ru"></textarea>
+          <textarea name="descEn" placeholder="description.en"></textarea>
+          <input name="imageUrl" placeholder="imageUrl (optional)">
+          <input name="imageFile" type="file" accept="image/*">
+          <button type="submit">저장</button>
+          <button type="button" id="campaignReset">초기화</button>
+        </form>
+        <div id="campaignList" class="list"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Copy Overrides</h2>
+        <form id="copyForm" class="grid-form">
+          <input name="key" placeholder="copy key (예: hero_title)" required>
+          <textarea name="ko" placeholder="ko"></textarea>
+          <textarea name="ru" placeholder="ru"></textarea>
+          <textarea name="en" placeholder="en"></textarea>
+          <button type="submit">저장</button>
+        </form>
+        <div id="copyList" class="list"></div>
+      </section>
+    </section>
+  </main>
+
+  <script type="module" src="admin.js"></script>
+</body>
+</html>
